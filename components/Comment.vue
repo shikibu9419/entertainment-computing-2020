@@ -1,8 +1,10 @@
 <!-- Please remove this file from your project -->
 <template>
-  <div class='arrow-box'>
-    {{ content }}
-  </div>
+  <transition>
+    <div v-show="isShown" class='arrow-box'>
+      {{ content }}
+    </div>
+  </transition>
 </template>
 
 <script lang="ts">
@@ -11,6 +13,19 @@ import Vue from 'vue'
 export default Vue.extend({
   props: {
     content: String
+  },
+  data () {
+    return {
+      isShown: false
+    }
+  },
+  mounted () {
+    this.isShown = true;
+    setTimeout(() => {
+      this.isShown = false;
+      // this.$destroy();
+      // this.$el?.parentNode?.removeChild(this.$el);
+    }, 5000);
   }
 })
 </script>
@@ -66,7 +81,7 @@ export default Vue.extend({
     transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
 
-.v-enter, v-leave-to {
+.v-enter, .v-leave-to {
     transform: translateY(10px);
     opacity: 0;
 }
