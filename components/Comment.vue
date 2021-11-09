@@ -1,7 +1,7 @@
 <!-- Please remove this file from your project -->
 <template>
   <transition>
-    <div v-show="isShown" class='arrow-box'>
+    <div v-show="isShown" class='arrow-box' :style="{ left: `${posX}vw` }">
       {{ content }}
     </div>
   </transition>
@@ -16,23 +16,26 @@ export default Vue.extend({
   },
   data () {
     return {
-      isShown: false
+      isShown: false,
+      posX: 0,
     }
   },
   mounted () {
     this.isShown = true;
+    this.posX = Math.random() * 100;
+
     setTimeout(() => {
       this.isShown = false;
-      // this.$destroy();
-      // this.$el?.parentNode?.removeChild(this.$el);
+      this.$destroy();
+      this.$el?.parentNode?.removeChild(this.$el);
     }, 5000);
-  }
+  },
 })
 </script>
 
 <style>
 .arrow-box{
-    position:relative;
+    position:absolute;
     width:300px;
     height:70px;
     background:#FFFFFF;
@@ -78,7 +81,7 @@ export default Vue.extend({
 }
 
 .v-enter-active, .v-leave-active {
-    transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    transition: all .2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
 
 .v-enter, .v-leave-to {
