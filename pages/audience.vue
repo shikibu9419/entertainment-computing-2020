@@ -59,9 +59,12 @@
 
 <script>
 import Vue from 'vue'
+
 import fingerpose from 'fingerpose'
 import * as handpose from '@tensorflow-models/handpose';
 import '@tensorflow/tfjs-backend-webgl';
+
+import io from 'socket.io-client'
 
 const config = {
   video: { width: 640, height: 480, fps: 30 }
@@ -125,32 +128,35 @@ export default Vue.extend({
       video: null,
       ctx: null,
       resultLayer: null,
-      GE: null,
+      estimator: null,
       model: null
     }
   },
   mounted() {
+    // TODO: Change host
+    // this.socket = io('http://localhost:8000');
+    // this.socket.on('new-msg', msg => {
+    //   console.log(msg);
+    // });
+
     const canvas = document.querySelector("#pose-canvas");
     canvas.width = config.video.width;
     canvas.height = config.video.height;
-    console.log("Canvas initialized");
 
     initCamera(
       config.video.width, config.video.height, config.video.fps
     ).then(video => {
       video.play();
-      video.addEventListener("loadeddata", event => {
-        console.log("Camera is ready");
-        this.main();
+      video.addEventListener("loadeddata", _ => {
+        this.setupEstimation();
       });
     });
   },
   methods: {
-    async main() {
+    async setupEstimation() {
       this.video = document.querySelector("#pose-video");
       const canvas = document.querySelector("#pose-canvas");
       this.ctx = canvas.getContext("2d");
-
       this.resultLayer = document.querySelector("#pose-result");
 
       // configure gesture estimator
@@ -159,13 +165,9 @@ export default Vue.extend({
         fingerpose.Gestures.VictoryGesture,
         fingerpose.Gestures.ThumbsUpGesture
       ];
-      this.GE = new fingerpose.GestureEstimator(knownGestures);
-
-      // load handpose model
+      this.estimator = new fingerpose.GestureEstimator(knownGestures);
       this.model = await handpose.load();
-      console.log("Handpose model loaded");
 
-      // TODO: setInterval
       setInterval(this.estimateHands, 1000 / config.video.fps)
     },
     async estimateHands() {
@@ -189,16 +191,17 @@ export default Vue.extend({
         // estimate gestures based on landmarks
         // using a minimum score of 9 (out of 10)
         // gesture candidates with lower score will not be returned
-        const est = this.GE.estimate(predictions[i].landmarks, 9);
-
-        if(est.gestures.length > 0) {
-
+        const est = this.estimator.estimate(predictions[i].landmarks, 9);
+        if (est.gestures.length > 0) {
           // find gesture with highest match score
           const result = est.gestures.reduce((p, c) => {
             return (p.score > c.score) ? p : c;
           });
 
           this.resultLayer.innerText = gestureStrings[result.name];
+
+          // send to server
+          this.socket.emit('send-msg', result.name);
         }
 
         // update debug info
