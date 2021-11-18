@@ -49,6 +49,7 @@ export default Vue.extend({
     -webkit-border-radius:50px;
     -moz-border-radius:50px;
     margin-right: 4px;
+    bottom: 0;
 }
 .arrow-box:after,.arrow-box:before{
     border: solid transparent;

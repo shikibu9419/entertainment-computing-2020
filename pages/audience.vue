@@ -64,7 +64,7 @@ import fingerpose from 'fingerpose'
 import * as handpose from '@tensorflow-models/handpose';
 import '@tensorflow/tfjs-backend-webgl';
 
-import io from 'socket.io-client'
+import io from 'socket.io-client';
 
 const config = {
   video: { width: 640, height: 480, fps: 30 }

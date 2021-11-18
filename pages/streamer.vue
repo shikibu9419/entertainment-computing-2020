@@ -10,6 +10,8 @@
 import Vue from 'vue'
 import Comment from '../components/Comment.vue';
 
+import io from 'socket.io-client';
+
 export default Vue.extend({
   components: { Comment },
   data () {
@@ -18,6 +20,11 @@ export default Vue.extend({
     }
   },
   mounted () {
+    const socket = io('http://localhost:8000')
+    socket.on('new-msg', msg => {
+      this.createComment(msg);
+    })
+
     const contents = ['なるほど', 'お〜', 'どゆこと？'];
     setInterval(() => {
       this.createComment(contents[this.index]);
@@ -36,10 +43,8 @@ export default Vue.extend({
 
 <style>
 .comment-area {
-  position: absolute;
-  bottom: 0;
-  display: flex;
+  height: 100%;
+  width: 100%;
   padding-bottom: 20px;
 }
-
 </style>

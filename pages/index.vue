@@ -1,5 +1,7 @@
 <template>
-  <Tutorial/>
+  <div>
+    <button>配信する</button>
+  </div>
 </template>
 
 <script lang="ts">
