@@ -65,6 +65,7 @@ import * as handpose from '@tensorflow-models/handpose';
 import '@tensorflow/tfjs-backend-webgl';
 
 import io from 'socket.io-client';
+import gestures from '../lib/gestures'
 
 const config = {
   video: { width: 640, height: 480, fps: 30 }
@@ -81,7 +82,8 @@ const landmarkColors = {
 
 const gestureStrings = {
   'thumbs_up': '👍',
-  'victory': '✌🏻'
+  'victory': '✌🏻',
+  'ok': '👌',
 };
 
 async function initCamera(width, height, fps) {
@@ -163,7 +165,8 @@ export default Vue.extend({
       // add "✌🏻" and "👍" as sample gestures
       const knownGestures = [
         fingerpose.Gestures.VictoryGesture,
-        fingerpose.Gestures.ThumbsUpGesture
+        fingerpose.Gestures.ThumbsUpGesture,
+        gestures.OkGesture,
       ];
       this.estimator = new fingerpose.GestureEstimator(knownGestures);
       this.model = await handpose.load();
