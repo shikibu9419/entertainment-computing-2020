@@ -84,6 +84,9 @@ const gestureStrings = {
   'thumbs_up': '👍',
   'victory': '✌🏻',
   'ok': '👌',
+  'gun': '🔫',
+  'heart': '😍',
+  'killyou': '💩',
 };
 
 async function initCamera(width, height, fps) {
@@ -167,7 +170,10 @@ export default Vue.extend({
         fingerpose.Gestures.VictoryGesture,
         fingerpose.Gestures.ThumbsUpGesture,
         gestures.OkGesture,
-      ];
+        gestures.GunGesture,
+        gestures.HeartGesture,
+        gestures.KillyouGesture,
+      ]
       this.estimator = new fingerpose.GestureEstimator(knownGestures);
       this.model = await handpose.load();
 
