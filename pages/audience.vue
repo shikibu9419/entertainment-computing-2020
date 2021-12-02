@@ -134,13 +134,14 @@ export default Vue.extend({
       ctx: null,
       resultLayer: null,
       estimator: null,
-      model: null
+      model: null,
+      reaction: '',
     }
   },
   mounted() {
     // TODO: Change host
-    // this.socket = io('http://localhost:8000');
-    // this.socket.on('new-msg', msg => {
+    this.socket = io('http://localhost:8000');
+    // this.socket.on('message', msg => {
     //   console.log(msg);
     // });
 
@@ -177,9 +178,10 @@ export default Vue.extend({
       this.estimator = new fingerpose.GestureEstimator(knownGestures);
       this.model = await handpose.load();
 
-      setInterval(this.estimateHands, 1000 / config.video.fps)
+      setInterval(this.estimateHands, 1000 / config.video.fps);
     },
     async estimateHands() {
+      this.reaction = '';
       // clear canvas overlay
       this.ctx.clearRect(0, 0, config.video.width, config.video.height);
       this.resultLayer.innerText = '';
@@ -208,9 +210,10 @@ export default Vue.extend({
           });
 
           this.resultLayer.innerText = gestureStrings[result.name];
+          if (result.name !== this.reaction)
+            this.socket.send(result.name);
 
-          // send to server
-          this.socket.emit('send-msg', result.name);
+          this.reaction = result.name;
         }
 
         // update debug info
