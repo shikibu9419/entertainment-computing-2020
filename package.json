@@ -9,7 +9,8 @@
     "generate": "nuxt generate",
     "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
     "prepare": "husky install",
-    "lint": "yarn lint:js"
+    "lint": "yarn lint:js",
+    "server": "node server"
   },
   "dependencies": {
     "@tensorflow-models/handpose": "^0.0.7",
