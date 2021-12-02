@@ -1,7 +1,6 @@
 <template>
   <div>
     <div id="comment-area" class="comment-area">
-      <comment content="あ," />
     </div>
   </div>
 </template>
@@ -16,19 +15,23 @@ export default Vue.extend({
   components: { Comment },
   data () {
     return {
-      index: 0
+      index: 0,
+      socket: io('http://localhost:8000'),
     }
   },
   mounted () {
-    const socket = io('http://localhost:8000')
-    socket.on('new-msg', msg => {
+    this.socket.on("connect", () => {
+      console.log(this.socket.id);
+    });
+    this.socket.on('message', msg => {
       this.createComment(msg);
-    })
+    });
 
     const contents = ['なるほど', 'お〜', 'どゆこと？'];
     setInterval(() => {
-      this.createComment(contents[this.index]);
+//       this.createComment(contents[this.index]);
       this.index = (this.index + 1) % contents.length;
+//       this.socket.send(contents[this.index]);
     }, 1000)
   },
   methods: {
