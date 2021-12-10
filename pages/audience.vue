@@ -140,7 +140,8 @@ export default Vue.extend({
   },
   mounted() {
     // TODO: Change host
-    this.socket = io('http://localhost:8000');
+    // this.socket = io('http://localhost:8000');
+    this.socket = io('https://ec5e-133-51-231-64.jp.ngrok.io');
     // this.socket.on('message', msg => {
     //   console.log(msg);
     // });

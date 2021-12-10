@@ -22,6 +22,9 @@ export default Vue.extend({
         'thumbs_up': '👍',
         'victory': '✌🏻',
         'ok': '👌',
+        'gun': '🔫',
+        'heart': '😍',
+        'killyou': '💩',
       },
     }
   },
