@@ -16,7 +16,7 @@ export default Vue.extend({
   data () {
     return {
       index: 0,
-      socket: io('https://ec5e-133-51-231-64.jp.ngrok.io'),
+      socket: io('http://localhost:8000'),
     }
   },
   mounted () {

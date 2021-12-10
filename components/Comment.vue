@@ -24,7 +24,7 @@ export default Vue.extend({
         'ok': '👌',
         'gun': '🔫',
         'heart': '😍',
-        'killyou': '💩',
+        'killyou': '🥳'
       },
     }
   },

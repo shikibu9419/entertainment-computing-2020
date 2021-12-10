@@ -86,7 +86,7 @@ const gestureStrings = {
   'ok': '👌',
   'gun': '🔫',
   'heart': '😍',
-  'killyou': '💩',
+  'killyou': '🥳',
 };
 
 async function initCamera(width, height, fps) {
@@ -180,6 +180,7 @@ export default Vue.extend({
       this.model = await handpose.load();
 
       setInterval(this.estimateHands, 1000 / config.video.fps);
+      setInterval(() => { this.socket.send(this.reaction); }, 5000);
     },
     async estimateHands() {
       this.reaction = '';
